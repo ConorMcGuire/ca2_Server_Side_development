@@ -1,52 +1,47 @@
 
---
--- Table structure for table `categories`
---
+DROP database IF EXISTS motorbikesdb;
+CREATE database IF NOT EXISTS motorbikesdb;
+USE motorbikesdb;
+DROP TABLE IF EXISTS categories, motorbikes;
 
-CREATE TABLE `categories` (
-  `categoryID` int(11) NOT NULL,
-  `categoryName` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE categories (
+	category_id VARCHAR(10) NOT NULL,
+	category_name VARCHAR(20),
+	PRIMARY KEY (category_id));
 
---
--- Dumping data for table `categories`
---
+CREATE TABLE motorbikes (
+	motorbike_id INTEGER(10) NOT NULL,
+	category_id VARCHAR(10) NOT NULL,
+	image VARCHAR(20),
+	make VARCHAR(20),
+	model VARCHAR(20),
+	price DOUBLE(7,2),
+	year INTEGER(4),
+	engine_size INTEGER(4),
+	PRIMARY KEY (motorbike_id),
+	FOREIGN KEY (category_id) REFERENCES categories(category_id));
+	
+INSERT INTO categories VALUES ("SPORT", "Sport Bikes");
+INSERT INTO categories VALUES ("STREET", "Street Bikes");
+INSERT INTO categories VALUES ("TRAIL", "Adventure Bikes");
+INSERT INTO categories VALUES ("TOUR", "Touring Bikes");
 
-INSERT INTO `categories` (`categoryID`, `categoryName`) VALUES
-(1, 'Category 1'),
-(2, 'Category 2'),
-(3, 'Category 3');
-
---
--- Table structure for table `records`
---
-
-CREATE TABLE `records` (
-  `recordID` int(11) NOT NULL,
-  `categoryID` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `image` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `records`
---
-
-INSERT INTO `records` (`recordID`, `categoryID`, `name`, `price`, `image`) VALUES
-(1, 1, 'Some text', '12.00', '644471.jpg'),
-(2, 1, 'Some text', '15.00', '233012.jpg'),
-(3, 1, 'Some text', '18.00', '329484.jpg'),
-(4, 1, 'Some text', '10.00', '644055.jpg'),
-(5, 2, 'Some text', '16.00', '373465.jpg'),
-(6, 2, 'Some text', '19.00', '373989.jpg'),
-(7, 2, 'Some text', '12.00', '374104.jpg'),
-(8, 2, 'Some text', '10.00', '4733.jpg'),
-(9, 2, 'Some text', '15.00', '834551.jpg'),
-(10, 3, 'Some text', '13.00', '908783.jpg'),
-(11, 3, 'Some text', '17.00', '835545.jpg'),
-(12, 3, 'Some text', '19.00', '119273.jpg');
-
+INSERT INTO motorbikes VALUES ("1", "SPORT", "1.jpg", "Honda", "CBR500R", 7899.00, 2021, 500);
+INSERT INTO motorbikes VALUES ("2", "SPORT", "2.jpg", "Kawasaki", "NINJA 650", 8990.00, 2019, 650);
+INSERT INTO motorbikes VALUES ("3", "SPORT", "3.jpg", "Suzuki", "GSX-R750 ", 12699.00, 2021, 750);
+INSERT INTO motorbikes VALUES ("4", "SPORT", "4.png", "Yamaha", "YZF-R1", 17399.00, 2021, 1000);
+INSERT INTO motorbikes VALUES ("5", "STREET", "5.jpg", "Suzuki", "Katana", 13499.00, 2020, 1000);
+INSERT INTO motorbikes VALUES ("6", "STREET", "6.jpg", "Honda", "CB125R", 51999.00, 2019, 500);
+INSERT INTO motorbikes VALUES ("7", "STREET", "7.jpg", "BMW", "R1250 R", 14995.00, 2020, 1250);
+INSERT INTO motorbikes VALUES ("8", "STREET", "8.jpg", "Triumph", "Street Triple", 12850.00, 2021, 765);
+INSERT INTO motorbikes VALUES ("9", "TRAIL", "9.jpg", "Honda", "XR125", 2800.00, 2003, 125);
+INSERT INTO motorbikes VALUES ("10", "TRAIL", "10.jpg", "BMW", "R1250GS", 17995.00, 2021, 1250);
+INSERT INTO motorbikes VALUES ("11", "TRAIL", "11.jpg", "Ducati", "Multistrada V4", 18395.00, 2021, 1200);
+INSERT INTO motorbikes VALUES ("12", "TRAIL", "12.jpg", "Honda", "Africa Twin", 13050.00, 2020, 1100);
+INSERT INTO motorbikes VALUES ("13", "TOUR", "13.jpg", "BMW", "K 1600 Grand America", 26295.00, 2021, 1600);
+INSERT INTO motorbikes VALUES ("14", "TOUR", "14.jpg", "Honda", "Goldwing", 25000.00, 2018, 1800);
+INSERT INTO motorbikes VALUES ("15", "TOUR", "15.jpg", "Harley-Davidson", "Road Glide", 24695.00, 2020, 1900);
+/*
 --
 -- Indexes for dumped tables
 --
@@ -63,6 +58,6 @@ ALTER TABLE `records`
 
 --
 -- AUTO_INCREMENT for table `records`
---
-ALTER TABLE `records`
-  MODIFY `recordID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--*/
+ALTER TABLE `motorbikes`
+  MODIFY `motorbike_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;

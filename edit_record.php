@@ -1,16 +1,21 @@
 <?php
 
 // Get the record data
-$record_id = filter_input(INPUT_POST, 'record_id', FILTER_VALIDATE_INT);
-$category_id = filter_input(INPUT_POST, 'category_id', FILTER_VALIDATE_INT);
-$name = filter_input(INPUT_POST, 'name');
+$motorbike_id = filter_input(INPUT_POST, 'motorbike_id', FILTER_VALIDATE_INT);
+$category_id = filter_input(INPUT_POST, 'category_id');
+$make = filter_input(INPUT_POST, 'make');
+$model = filter_input(INPUT_POST, 'model');
 $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
+$year = filter_input(INPUT_POST, 'year', FILTER_VALIDATE_INT);
+$engine_size = filter_input(INPUT_POST, 'engine_size', FILTER_VALIDATE_INT);
 
 // Validate inputs
-if ($record_id == NULL || $record_id == FALSE || $category_id == NULL ||
-$category_id == FALSE || empty($name) ||
-$price == NULL || $price == FALSE) {
-$error = "Invalid record data. Check all fields and try again.";
+if ($motorbike_id == NULL || $motorbike_id == FALSE || $category_id == NULL ||
+empty($category_id) || empty($make) || empty($model) || 
+$price == NULL || $price == FALSE ||
+$year == NULL || $year == FALSE ||
+$engine_size == NULL || $engine_size == FALSE) {
+$error = "Invalid motorbike data. Check all fields and try again.";
 include('error.php');
 } else {
 
@@ -48,18 +53,24 @@ $image = $original_image; // old image from database
 // If valid, update the record in the database
 require_once('database.php');
 
-$query = 'UPDATE records
-SET categoryID = :category_id,
-name = :name,
+$query = 'UPDATE motorbikes
+SET category_id = :category_id,
+make = :make,
+model = :model,
 price = :price,
+year = :year,
+engine_size = :engine_size,
 image = :image
-WHERE recordID = :record_id';
+WHERE motorbike_id = :motorbike_id';
 $statement = $db->prepare($query);
 $statement->bindValue(':category_id', $category_id);
-$statement->bindValue(':name', $name);
+$statement->bindValue(':make', $make);
+$statement->bindValue(':model', $model);
+$statement->bindValue(':engine_size', $engine_size);
+$statement->bindValue(':year', $year);
 $statement->bindValue(':price', $price);
 $statement->bindValue(':image', $image);
-$statement->bindValue(':record_id', $record_id);
+$statement->bindValue(':motorbike_id', $motorbike_id);
 $statement->execute();
 $statement->closeCursor();
 

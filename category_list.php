@@ -3,7 +3,7 @@
 
     // Get all categories
     $query = 'SELECT * FROM categories
-              ORDER BY categoryID';
+              ORDER BY category_id';
     $statement = $db->prepare($query);
     $statement->execute();
     $categories = $statement->fetchAll();
@@ -22,12 +22,12 @@ include('includes/header.php');
         </tr>
         <?php foreach ($categories as $category) : ?>
         <tr>
-            <td><?php echo $category['categoryName']; ?></td>
+            <td><?php echo $category['category_name']; ?></td>
             <td>
                 <form action="delete_category.php" method="post"
                       id="delete_product_form">
                     <input type="hidden" name="category_id"
-                           value="<?php echo $category['categoryID']; ?>">
+                           value="<?php echo $category['category_id']; ?>">
                     <input type="submit" value="Delete">
                 </form>
             </td>
@@ -40,8 +40,11 @@ include('includes/header.php');
     <form action="add_category.php" method="post"
           id="add_category_form">
 
-        <label>Name:</label>
-        <input type="input" name="name">
+        <label>Category ID:</label>
+        <input type="input" name="category_id">
+
+        <label>Category Name:</label>
+        <input type="input" name="category_name">
         <input id="add_category_button" type="submit" value="Add">
     </form>
     <br>

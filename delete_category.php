@@ -1,9 +1,9 @@
 <?php
 // Get ID
-$category_id = filter_input(INPUT_POST, 'category_id', FILTER_VALIDATE_INT);
+$category_id = filter_input(INPUT_POST, 'category_id');
 
 // Validate inputs
-if ($category_id == null || $category_id == false) {
+if (empty($category_id)) {
     $error = "Invalid category ID.";
     include('error.php');
 } else {
@@ -11,7 +11,7 @@ if ($category_id == null || $category_id == false) {
 
     // Add the product to the database  
     $query = 'DELETE FROM categories 
-              WHERE categoryID = :category_id';
+              WHERE category_id = :category_id';
     $statement = $db->prepare($query);
     $statement->bindValue(':category_id', $category_id);
     $statement->execute();

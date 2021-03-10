@@ -1,14 +1,14 @@
 <?php
 require('database.php');
 
-$record_id = filter_input(INPUT_POST, 'record_id', FILTER_VALIDATE_INT);
+$motorbike_id = filter_input(INPUT_POST, 'motorbike_id', FILTER_VALIDATE_INT);
 $query = 'SELECT *
-          FROM records
-          WHERE recordID = :record_id';
+          FROM motorbikes
+          WHERE motorbike_id = :motorbike_id';
 $statement = $db->prepare($query);
-$statement->bindValue(':record_id', $record_id);
+$statement->bindValue(':motorbike_id', $motorbike_id);
 $statement->execute();
-$records = $statement->fetch(PDO::FETCH_ASSOC);
+$motorbikes = $statement->fetch(PDO::FETCH_ASSOC);
 $statement->closeCursor();
 ?>
 <!-- the head section -->
@@ -16,33 +16,48 @@ $statement->closeCursor();
 <?php
 include('includes/header.php');
 ?>
-        <h1>Edit Product</h1>
+        <h1>Edit Motorbike Details</h1>
         <form action="edit_record.php" method="post" enctype="multipart/form-data"
               id="add_record_form">
-            <input type="hidden" name="original_image" value="<?php echo $records['image']; ?>" />
-            <input type="hidden" name="record_id"
-                   value="<?php echo $records['recordID']; ?>">
+            <input type="hidden" name="original_image" value="<?php echo $motorbikes['image']; ?>" />
+            <input type="hidden" name="motorbike_id"
+                   value="<?php echo $motorbikes['motorbike_id']; ?>">
 
             <label>Category ID:</label>
             <input type="category_id" name="category_id"
-                   value="<?php echo $records['categoryID']; ?>">
+                   value="<?php echo $motorbikes['category_id']; ?>" required>
             <br>
 
-            <label>Name:</label>
-            <input type="input" name="name"
-                   value="<?php echo $records['name']; ?>">
+            <label>Make:</label>
+            <input type="input" name="make"
+                   value="<?php echo $motorbikes['make']; ?>" required placeholder="Enter manufacturer">
+            <br>
+
+            <label>Model:</label>
+            <input type="input" name="model"
+                   value="<?php echo $motorbikes['model']; ?>" required placeholder="Enter model">
             <br>
 
             <label>List Price:</label>
-            <input type="input" name="price"
-                   value="<?php echo $records['price']; ?>">
+            <input type="input" name="price" pattern="\d{1,5}\.\d{2}"
+                   value="<?php echo $motorbikes['price']; ?>" required placeholder="Enter Price">
+            <br>
+
+            <label>Year:</label>
+            <input type="input" name="year"
+                   value="<?php echo $motorbikes['year']; ?>" required placeholder="Enter year">
+            <br>
+
+            <label>Engine Size:</label>
+            <input type="input" name="engine_size"
+                   value="<?php echo $motorbikes['engine_size']; ?>" required placeholder="Enter engine size">
             <br>
 
             <label>Image:</label>
-            <input type="file" name="image" accept="image/*" />
+            <input type="file" name="image" accept="image/*" required/>
             <br>            
-            <?php if ($records['image'] != "") { ?>
-            <p><img src="image_uploads/<?php echo $records['image']; ?>" height="150" /></p>
+            <?php if ($motorbikes['image'] != "") { ?>
+            <p><img src="image_uploads/<?php echo $motorbikes['image']; ?>" height="150" /></p>
             <?php } ?>
             
             <label>&nbsp;</label>

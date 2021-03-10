@@ -1,23 +1,30 @@
 <?php
 
 // Get the product data
-$category_id = filter_input(INPUT_POST, 'category_id', FILTER_VALIDATE_INT);
-$name = filter_input(INPUT_POST, 'name');
+$category_id = filter_input(INPUT_POST, 'category_id');
+$make = filter_input(INPUT_POST, 'make');
+$model = filter_input(INPUT_POST, 'model');
 $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
+$year = filter_input(INPUT_POST, 'year', FILTER_VALIDATE_INT);
+$engine_size = filter_input(INPUT_POST, 'engine_size', FILTER_VALIDATE_INT);
 
 // Validate inputs
-if ($category_id == null || $category_id == false ||
-    $name == null || $price == null || $price == false ) {
-    $error = "Invalid product data. Check all fields and try again.";
+if (
+    empty($category_id) || empty($make) || empty($model) ||
+    $price == NULL || $price == FALSE ||
+    $year == NULL || $year == FALSE ||
+    $engine_size == NULL || $engine_size == FALSE
+) {
+    $error = "Invalid motorbike data. Check all fields and try again.";
     include('error.php');
     exit();
 } else {
 
     /**************************** Image upload ****************************/
 
-    error_reporting(~E_NOTICE); 
+    //error_reporting(~E_NOTICE);
 
-// avoid notice
+    // avoid notice
 
     $imgFile = $_FILES['image']['name'];
     $tmp_dir = $_FILES['image']['tmp_name'];
@@ -36,10 +43,10 @@ if ($category_id == null || $category_id == false ||
         $image = rand(1000, 1000000) . "." . $imgExt;
         // allow valid image file formats
         if (in_array($imgExt, $valid_extensions)) {
-        // Check file size '5MB'
+            // Check file size '5MB'
             if ($imgSize < 5000000) {
                 if (move_uploaded_file($_FILES["image"]["tmp_name"], $upload_dir . $image)) {
-                    echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
+                    echo "The file " . basename($_FILES["image"]["name"]) . " has been uploaded.";
                 } else {
                     $error =  "Sorry, there was an error uploading your file.";
                     include('error.php');
@@ -58,17 +65,20 @@ if ($category_id == null || $category_id == false ||
     }
 
     /************************** End Image upload **************************/
-    
+
     require_once('database.php');
 
     // Add the product to the database 
-    $query = "INSERT INTO records
-                 (categoryID, name, price, image)
+    $query = 'INSERT INTO motorbikes
+                 (category_id, image, make, model, price, year, engine_size)
               VALUES
-                 (:category_id, :name, :price, :image)";
+                 (:category_id, :image, :make, :model, :price, :year, :engine_size)';
     $statement = $db->prepare($query);
     $statement->bindValue(':category_id', $category_id);
-    $statement->bindValue(':name', $name);
+    $statement->bindValue(':make', $make);
+    $statement->bindValue(':model', $model);
+    $statement->bindValue(':engine_size', $engine_size);
+    $statement->bindValue(':year', $year);
     $statement->bindValue(':price', $price);
     $statement->bindValue(':image', $image);
     $statement->execute();
